@@ -250,6 +250,19 @@ kbd{font-family:var(--mono);background:#fff;border:1px solid #cdbfab;border-bott
 .accfx.l4 .abanner{font-size:clamp(36px,8vw,96px);background:linear-gradient(90deg,#ff6a5a,#ffd35c,#6cc07a,#5b9bd5,#b680e6);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.4))}
 .aflash{position:absolute;inset:0;background:#fff;opacity:0;animation:fl .7s ease-out}
 @keyframes fl{0%{opacity:.85}100%{opacity:0}}
+
+/* ---- れんしゅう ---- */
+.pracPanel{max-width:760px;margin:0 auto;text-align:center}
+.pracLab{font-weight:700;font-size:clamp(16px,1.7vw,22px);margin:14px 0 8px}
+.pracRow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pbtn{border:3px solid #cfc3e6;background:#fff;color:var(--ink);border-radius:16px;padding:12px 6px;font:inherit;font-weight:700;font-size:clamp(16px,1.8vw,24px);cursor:pointer}
+.pbtn small{display:block;font-weight:400;font-size:.62em;color:var(--ink2);margin-top:2px}
+.pbtn.sel{border-color:#e0621a;background:#fff2e0;box-shadow:0 0 0 3px rgba(224,98,26,.25)}
+.pracNote{color:var(--ink2);margin:14px 0 12px;line-height:1.7}
+#game.practice .timebar,#game.practice .hud .sc,#game.practice .combo{display:none}
+#game.practice .tleft{min-width:0;text-align:left}
+.oyaTxt h3{margin:14px 0 4px;font-size:1.05em}
+.oyaTxt p{margin:0;line-height:1.8}
 .ctile .ic .ico{width:1.5em;height:1.5em}
 /* ===== 笠間市版：栗・秋の山・笠間焼・稲荷の配色 ===== */
 :root{--ink:#3a2e4f;--ink2:#5e4a63;--sun:#a8571f;--sun2:#e9b07a;--paper:#fff8ec;--paper2:#f3e3c8;--gold:#e3a52e;--lake:#2f7f9e;--lake2:#1f5a73;--ok:#2e8a5a;--ng:#d8452b;--r1:#4a98b5;--r2:#d8452b;--r3:#e3a52e;--bark:#5e3118}
@@ -398,6 +411,7 @@ span.titlemar.marfb{width:16vh;height:16vh}
         <button class="btn sub2" id="howBtn">❓ あそびかた</button>
         <button class="btn sub2" id="certBtn">📜 証書</button>
         <a class="btn sub2" href="https://heino-naka.github.io/ibaraki-typing-map/" style="grid-column:1/-1;text-decoration:none">🗺️ いばらきタイピング探検MAP</a>
+        <button class="btn sub2 small" id="oyaBtn" style="grid-column:1/-1">👪 おうちの人・先生へ</button>
       </div>
     </div>
   </div>
@@ -409,7 +423,40 @@ span.titlemar.marfb{width:16vh;height:16vh}
 <section class="screen" id="coursesScr">
   <h2 class="scrTitle">コースを えらぼう</h2>
   <div class="courseRow" id="courseList"></div>
-  <div class="row" style="justify-content:center"><button class="btn sub2" data-go="title">← もどる</button></div>
+  <div class="row" style="justify-content:center"><button class="btn sub2" data-go="title">← もどる</button><button class="btn blue" data-go="practiceScr">✏️ れんしゅう</button></div>
+</section>
+
+<!-- れんしゅう えらび -->
+<section class="screen" id="practiceScr">
+  <h2 class="scrTitle">✏️ れんしゅう</h2>
+  <div class="panel pracPanel">
+    <p class="pracLab">① コースを えらぼう</p>
+    <div class="pracRow" id="pracCourse"></div>
+    <p class="pracLab">② ことばの かずを えらぼう</p>
+    <div class="pracRow" id="pracCount"></div>
+    <p class="pracNote">じかんは はかりません。てんすうも つかないよ。<br>ゆっくり せいかくに うとう！</p>
+    <button class="btn big" id="pracStart">▶ スタート</button>
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn sub2" data-go="coursesScr">← もどる</button></div>
+  </div>
+</section>
+
+<!-- れんしゅう けっか -->
+<section class="screen" id="practiceRes">
+  <div class="panel pracPanel">
+    <h2 style="margin:0 0 4px">れんしゅう おわり！</h2>
+    <p id="prCourse" style="color:var(--ink2);margin:0 0 12px"></p>
+    <div class="stats">
+      <div>うった ことば<b id="prWords">0</b></div>
+      <div>せいかく さ<b id="prAcc">0%</b></div>
+      <div>かかった じかん<b id="prTime">0</b></div>
+    </div>
+    <p id="prMsg" style="font-weight:700;font-size:clamp(18px,2vw,26px);margin:12px 0 16px"></p>
+    <div class="menu">
+      <button class="btn" id="prAgain">🔁 もういちど</button>
+      <button class="btn blue" data-go="practiceScr">📋 コースを えらびなおす</button>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:10px"><button class="btn sub2" data-go="title">🏠 タイトルへ</button></div>
+  </div>
 </section>
 
 <!-- ゲーム -->
@@ -447,7 +494,7 @@ span.titlemar.marfb{width:16vh;height:16vh}
       <div class="bigscore" id="rScore">0</div>
       <p class="newbest" id="rBest"></p>
       <div class="titlebox">
-        <div class="lab">きょうの しょうごう</div>
+        <div class="lab">今日の 称号</div>
         <div class="ttl" id="rTitle"></div>
         <div class="nx" id="rNext"></div>
       </div>
@@ -538,7 +585,7 @@ const WORDS = [
  {"k":"モンブラン","r":"もんぶらん","lv":1,"ic":"📍","rar":1,"go":"food","cat":"kuri","f":"{栗|くり}のクリームを、細くしぼってのせたケーキだよ。{笠間|かさま}のお店では、いろいろなモンブランが楽しめるよ。","id":7},
  {"k":"栗ひろい","r":"くりひろい","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"秋の農園で、おちている栗をひろう体験だよ。{笠間|かさま}では、9月から10月ごろに楽しめるよ。","id":8},
  {"k":"かさま新栗まつり","r":"かさましんくりまつり","lv":3,"ic":"📍","rar":2,"go":"thing","cat":"kuri","f":"栗を楽しむお祭りだよ。栗のおかしや、ゆで栗がならぶよ。","id":9},
- {"k":"いちご狩り","r":"いちごがり","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"あかく育ったいちごを、ハウスで取って食べる体験だよ。","id":10},
+ {"k":"いちご狩り","r":"いちごがり","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":10},
  {"k":"笠間焼","r":"かさまやき","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"yaki","f":"笠間で作られている、やきものだよ。笠間の特産物のひとつだよ。","id":11},
  {"k":"陶芸","r":"とうげい","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"土をこねて、器を作ることだよ。{笠間|かさま}には、体験できるところがたくさんあるよ。","id":12},
  {"k":"ろくろ","r":"ろくろ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"くるくる回る台の上で、器の形を作る道具だよ。","id":13},
@@ -577,7 +624,7 @@ const WORDS = [
  {"k":"あぶらあげ","r":"あぶらあげ","lv":1,"ic":"📍","rar":1,"go":"food","cat":"jinja","f":"いなり{寿司|ずし}につかう、あげたとうふだよ。","id":46},
  {"k":"きつね","r":"きつね","lv":1,"ic":"📍","rar":1,"go":"creature","cat":"jinja","f":"{稲荷|いなり}神社では、きつねが神さまのつかいとして、たいせつにされているよ。","id":47},
  {"k":"菊人形","r":"きくにんぎょう","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"jinja","f":"菊まつりのときに、{笠間稲荷神社|かさまいなりじんじゃ}の境内にかざられる、菊の人形だよ。","id":48},
- {"k":"藤","r":"ふじ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"jinja","f":"{笠間稲荷神社|かさまいなりじんじゃ}には、{樹齢|じゅれい}400年をこえる、大きなふじがあるよ。","id":49},
+ {"k":"藤","r":"ふじ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"jinja","f":"","card":false,"id":49},
  {"k":"常陸国出雲大社","r":"ひたちのくにいずもたいしゃ","lv":3,"ic":"📍","rar":3,"go":"place","cat":"jinja","f":"福原にある神社で、大国主大神をまつっているよ。{縁結|えんむす}びでも知られているよ。","id":50},
  {"k":"愛宕神社","r":"あたごじんじゃ","lv":2,"ic":"📍","rar":2,"go":"place","cat":"jinja","f":"愛宕山のてっぺんにある神社で、火事をふせぐ神さまとして知られているよ。","id":51},
  {"k":"愛宕山","r":"あたごやま","lv":1,"ic":"📍","rar":1,"go":"place","cat":"jinja","f":"山のうえに神社があって、桜の名所だよ。","id":52},
@@ -611,17 +658,17 @@ const WORDS = [
  {"k":"かたくり","r":"かたくり","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"","card":false,"id":80},
  {"k":"すずらん","r":"すずらん","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"","card":false,"id":81},
  {"k":"菊","r":"きく","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"秋にさく花で、{笠間|かさま}の特産物のひとつだよ。","id":82},
- {"k":"梅","r":"うめ","lv":1,"ic":"📍","rar":1,"go":"food","cat":"nature","f":"春のはじめにさく花で、実もとれるよ。{笠間|かさま}の特産物だよ。","id":83},
+ {"k":"梅","r":"うめ","lv":1,"ic":"📍","rar":1,"go":"food","cat":"nature","f":"","card":false,"id":83},
  {"k":"梨","r":"なし","lv":1,"ic":"📍","rar":1,"go":"food","cat":"nature","f":"","card":false,"id":84},
- {"k":"桜","r":"さくら","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"春にさく、ピンク色の花だよ。{笠間|かさま}には、{愛宕山|あたごやま}など桜の名所がたくさんあるよ。","id":85},
+ {"k":"桜","r":"さくら","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"","card":false,"id":85},
  {"k":"ムラサキパークかさま","r":"むらさきぱーくかさま","lv":3,"ic":"📍","rar":3,"go":"place","cat":"sport","f":"スケートボードやBMXを楽しめる、日本でもとても大きいパークだよ。","id":86},
  {"k":"スケートボード","r":"すけーとぼーど","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"車輪のついた板に乗って、ジャンプやくるっと回る技をきめるよ。","id":87},
- {"k":"スケボー","r":"すけぼー","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"sport","f":"スケートボードのことを、短く「スケボー」ともいうよ。","id":88},
+ {"k":"スケボー","r":"すけぼー","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"sport","f":"","card":false,"id":88},
  {"k":"BMX","r":"びーえむえっくす","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"ジャンプやトリックをきめる、自転車の仲間だよ。","id":89},
  {"k":"インラインスケート","r":"いんらいんすけーと","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"くつの底に、タイヤが一列にならんだ、すべるくつだよ。","id":90},
- {"k":"ストリート","r":"すとりーと","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"街のなかにあるような、坂やてすりをつかってあそぶコースだよ。","id":91},
- {"k":"パーク","r":"ぱーく","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"sport","f":"おわんのようにくぼんだコースで、高いジャンプをするよ。","id":92},
- {"k":"ヘルメット","r":"へるめっと","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"頭を守るぼうしだよ。スケートボードや自転車のときは、必ずつけようね。","id":93},
+ {"k":"ストリート","r":"すとりーと","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"","card":false,"id":91},
+ {"k":"パーク","r":"ぱーく","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"sport","f":"","card":false,"id":92},
+ {"k":"ヘルメット","r":"へるめっと","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"","card":false,"id":93},
  {"k":"シェアサイクル","r":"しぇあさいくる","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"町のあちこちで、借りて返せる自転車だよ。","id":94},
  {"k":"サイクリング","r":"さいくりんぐ","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"自転車で、町を回る楽しみだよ。","id":95},
  {"k":"スナッグゴルフ","r":"すなっぐごるふ","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"sport","f":"ゴルフをかんたんにしたスポーツだよ。{笠間市|かさまし}の小学校には、スナッグゴルフ部があるよ。","id":96},
@@ -644,7 +691,7 @@ const WORDS = [
  {"k":"夢境庵","r":"むきょうあん","lv":2,"ic":"📍","rar":2,"go":"place","cat":"art","f":"{春風萬里荘|しゅんぷうばんりそう}にある茶室だよ。{魯山人|ろさんじん}が、自分で考えて作ったよ。","id":113},
  {"k":"春風庵","r":"しゅんぷうあん","lv":2,"ic":"📍","rar":2,"go":"place","cat":"art","f":"{春風萬里荘|しゅんぷうばんりそう}の中で、おちゃやあんみつを楽しめるよ。","id":114},
  {"k":"枯山水","r":"かれさんすい","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"art","f":"みずをつかわずに、石やすなで水のながれをあらわす庭だよ。{春風萬里荘|しゅんぷうばんりそう}にあるよ。","id":115},
- {"k":"茶室","r":"ちゃしつ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"art","f":"おちゃを楽しむための、静かな部屋だよ。","id":116},
+ {"k":"茶室","r":"ちゃしつ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"art","f":"","card":false,"id":116},
  {"k":"芸術の村","r":"げいじゅつのむら","lv":2,"ic":"📍","rar":2,"go":"place","cat":"art","f":"画家や{陶芸家|とうげいか}など、たくさんの芸術家のアトリエがある{丘|おか}だよ。","id":117},
  {"k":"縁結び","r":"えんむすび","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"jinja","f":"人と人との、良いつながりを願うことだよ。","id":118},
  {"k":"大国主大神","r":"おおくにぬしのおおかみ","lv":3,"ic":"📍","rar":2,"go":"thing","cat":"jinja","f":"","card":false,"id":119},
@@ -770,38 +817,38 @@ const WORDS = [
  {"k":"矢野下","r":"やのした","lv":1,"ic":"📍","rar":1,"go":"town","cat":"machi","f":"{友部|ともべ}地区にある町だよ。「矢野下」は「やのした」と読むよ。","id":239},
  {"k":"湯崎","r":"ゆざき","lv":1,"ic":"📍","rar":1,"go":"town","cat":"machi","f":"{友部|ともべ}地区にある町だよ。「湯崎」は「ゆざき」と読むよ。","id":240},
  {"k":"吉岡","r":"よしおか","lv":1,"ic":"📍","rar":1,"go":"town","cat":"machi","f":"{岩間|いわま}地区にある町だよ。「吉岡」は「よしおか」と読むよ。","id":241},
- {"k":"合唱","r":"がっしょう","lv":1,"ic":"🎵","rar":1,"go":"thing","cat":"life","f":"みんなで 声を 合わせて 歌うこと。となりの 人の 声も 聞いてみよう。","id":242},
- {"k":"運動会","r":"うんどうかい","lv":2,"ic":"🏃","rar":1,"go":"thing","cat":"life","f":"かけっこや たまいれなど、みんなで 体を 動かす 日。ゴールの 時の 笑顔が すてきだよ。","id":243},
- {"k":"登校","r":"とうこう","lv":1,"ic":"🎒","rar":1,"go":"thing","cat":"life","f":"学校に 行くこと。朝、なかよしの 友だちと 歩いて 行くのも 楽しいね。","id":244},
- {"k":"下校","r":"げこう","lv":1,"ic":"🌇","rar":1,"go":"thing","cat":"life","f":"学校から 帰ること。帰り道では、周りの 車に 注意しよう。","id":245},
- {"k":"まち探検","r":"まちたんけん","lv":2,"ic":"🔍","rar":2,"go":"thing","cat":"life","f":"町を 歩いて、楽しい ところや 発見を 探す 学習。この ゲームも 町の 探検だね。","id":246},
- {"k":"遠足","r":"えんそく","lv":1,"ic":"🍙","rar":1,"go":"thing","cat":"life","f":"お弁当を 持って、みんなで 出かける 学校の 行事。バスの 中も わくわくするね。","id":247},
- {"k":"水泳","r":"すいえい","lv":1,"ic":"🏊","rar":1,"go":"thing","cat":"life","f":"プールで 泳ぐ 学習。夏の 体育の 時間が 楽しみだね。","id":248},
- {"k":"体育","r":"たいいく","lv":1,"ic":"⚽","rar":1,"go":"thing","cat":"life","f":"体を 動かして、強く 元気に なる 学習。","id":249},
- {"k":"国語","r":"こくご","lv":1,"ic":"📖","rar":1,"go":"thing","cat":"life","f":"言葉や 文章を 学ぶ 学習。タイピングも 言葉の 練習に なるよ。","id":250},
- {"k":"算数","r":"さんすう","lv":1,"ic":"➕","rar":1,"go":"thing","cat":"life","f":"数や 形を 学ぶ 学習。たし算、ひき算から 始まるよ。","id":251},
- {"k":"なわとび","r":"なわとび","lv":1,"ic":"🪢","rar":1,"go":"thing","cat":"life","f":"なわを 回して 飛ぶ 遊び。ゲームの 次は、本物の なわとびに ちょうせんしてみよう！","id":252},
- {"k":"音楽","r":"おんがく","lv":1,"ic":"🎵","rar":1,"go":"thing","cat":"life","f":"歌を 歌ったり、楽器を えんそうしたりする 学習。","id":253},
- {"k":"理科","r":"りか","lv":1,"ic":"🧪","rar":1,"go":"thing","cat":"life","f":"自然の 不思議を 実験や 観察で 調べる 学習。周りの 生き物も 理科の 材料だね。","id":254},
- {"k":"社会","r":"しゃかい","lv":1,"ic":"🌏","rar":1,"go":"thing","cat":"life","f":"町や くらしの ことを 学ぶ 学習。笠間市の ことも 社会で 学ぶよ。","id":255},
- {"k":"生活","r":"せいかつ","lv":1,"ic":"🌱","rar":1,"go":"thing","cat":"life","f":"1・2年生で 学ぶ 学習。朝顔を 育てたり、町を 探検したりするよ。","id":256},
- {"k":"ランドセル","r":"らんどせる","lv":1,"ic":"🎒","rar":1,"go":"thing","cat":"life","f":"学校に 持っていく かばん。教科書や ノートを 入れて、せおって 歩くよ。","id":257},
- {"k":"宿泊学習","r":"しゅくはくがくしゅう","lv":3,"ic":"🏕️","rar":2,"go":"thing","cat":"life","f":"学校の みんなで 出かけて、とまりがけで 学ぶ 行事。ふだんと ちがう 時間が 過ごせるよ。","id":258},
- {"k":"修学旅行","r":"しゅうがくりょこう","lv":2,"ic":"🚄","rar":3,"go":"thing","cat":"life","f":"6年生が みんなで 旅行して、見学したり 学んだりする 行事。思い出に 残るよ。","id":259},
- {"k":"夏休み","r":"なつやすみ","lv":1,"ic":"🍉","rar":2,"go":"thing","cat":"life","f":"学校が お休みに なる、暑い 夏の 長い 休み。プールや 花火が 楽しみだね。","id":260},
- {"k":"冬休み","r":"ふゆやすみ","lv":1,"ic":"⛄","rar":2,"go":"thing","cat":"life","f":"12月の 終わりから 1月の 初めまでの 休み。お正月も やって くるよ。","id":261},
- {"k":"春休み","r":"はるやすみ","lv":1,"ic":"🌷","rar":2,"go":"thing","cat":"life","f":"学年が 変わる 前の 休み。新しい 友だちに 会うのが 楽しみだね。","id":262},
- {"k":"ゴールデンウィーク","r":"ごーるでんうぃーく","lv":2,"ic":"🎏","rar":2,"go":"thing","cat":"life","f":"4月の 終わりから 5月の 初めに、休みが 続く 時期。こいのぼりを 見かけるよ。","id":263},
- {"k":"インフルエンザ","r":"いんふるえんざ","lv":2,"ic":"🌡️","rar":2,"go":"thing","cat":"life","f":"冬に はやりやすい 病気。てあらい・うがいを して、かからないように しよう。","id":264},
- {"k":"保健室","r":"ほけんしつ","lv":1,"ic":"🩹","rar":2,"go":"place","cat":"life","f":"けがを したり 具合が 悪く なったりした 時、行く 部屋。先生が 手あてを してくれるよ。","id":265},
- {"k":"卒業式","r":"そつぎょうしき","lv":2,"ic":"🎓","rar":2,"go":"thing","cat":"life","f":"学校を 卒業する 日の 式。「ありがとう」を 伝える 大切な 日だよ。","id":266},
- {"k":"入学式","r":"にゅうがくしき","lv":2,"ic":"🌸","rar":2,"go":"thing","cat":"life","f":"新しい 学校に 入る 日の 式。ピカピカの ランドセルで 行くよ。","id":267},
- {"k":"委員会","r":"いいんかい","lv":1,"ic":"🏅","rar":2,"go":"thing","cat":"life","f":"学校の 仕事を 分たんして 行う 友だちの 集まり。みんなの ために 働くよ。","id":268},
- {"k":"クラブ活動","r":"くらぶかつどう","lv":2,"ic":"⚾","rar":2,"go":"thing","cat":"life","f":"すきな ことを、学年を 声た なかまと 楽しむ 活動。","id":269},
- {"k":"体育館","r":"たいいくかん","lv":2,"ic":"🏟️","rar":2,"go":"place","cat":"life","f":"体育や 行事を する、大きな 建物。広くて ひびきが いいね。","id":270},
- {"k":"プール","r":"ぷーる","lv":1,"ic":"🏊","rar":1,"go":"place","cat":"life","f":"学校や 町に ある、泳ぐ ための 水の 場所。","id":271},
- {"k":"教科書","r":"きょうかしょ","lv":2,"ic":"📚","rar":2,"go":"thing","cat":"life","f":"学校で 使う 本。毎日 かばんに 入れて 持ち運ぶよ。","id":272},
- {"k":"連絡帳","r":"れんらくちょう","lv":2,"ic":"📒","rar":2,"go":"thing","cat":"life","f":"先生や おうちの 人に 大事な ことを 伝える ノート。あしたの よていも かくよ。","id":273},
+ {"k":"合唱","r":"がっしょう","lv":1,"ic":"🎵","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":242},
+ {"k":"運動会","r":"うんどうかい","lv":2,"ic":"🏃","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":243},
+ {"k":"登校","r":"とうこう","lv":1,"ic":"🎒","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":244},
+ {"k":"下校","r":"げこう","lv":1,"ic":"🌇","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":245},
+ {"k":"まち探検","r":"まちたんけん","lv":2,"ic":"🔍","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":246},
+ {"k":"遠足","r":"えんそく","lv":1,"ic":"🍙","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":247},
+ {"k":"水泳","r":"すいえい","lv":1,"ic":"🏊","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":248},
+ {"k":"体育","r":"たいいく","lv":1,"ic":"⚽","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":249},
+ {"k":"国語","r":"こくご","lv":1,"ic":"📖","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":250},
+ {"k":"算数","r":"さんすう","lv":1,"ic":"➕","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":251},
+ {"k":"なわとび","r":"なわとび","lv":1,"ic":"🪢","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":252},
+ {"k":"音楽","r":"おんがく","lv":1,"ic":"🎵","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":253},
+ {"k":"理科","r":"りか","lv":1,"ic":"🧪","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":254},
+ {"k":"社会","r":"しゃかい","lv":1,"ic":"🌏","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":255},
+ {"k":"生活","r":"せいかつ","lv":1,"ic":"🌱","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":256},
+ {"k":"ランドセル","r":"らんどせる","lv":1,"ic":"🎒","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":257},
+ {"k":"宿泊学習","r":"しゅくはくがくしゅう","lv":3,"ic":"🏕️","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":258},
+ {"k":"修学旅行","r":"しゅうがくりょこう","lv":2,"ic":"🚄","rar":3,"go":"thing","cat":"life","f":"","card":false,"id":259},
+ {"k":"夏休み","r":"なつやすみ","lv":1,"ic":"🍉","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":260},
+ {"k":"冬休み","r":"ふゆやすみ","lv":1,"ic":"⛄","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":261},
+ {"k":"春休み","r":"はるやすみ","lv":1,"ic":"🌷","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":262},
+ {"k":"ゴールデンウィーク","r":"ごーるでんうぃーく","lv":2,"ic":"🎏","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":263},
+ {"k":"インフルエンザ","r":"いんふるえんざ","lv":2,"ic":"🌡️","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":264},
+ {"k":"保健室","r":"ほけんしつ","lv":1,"ic":"🩹","rar":2,"go":"place","cat":"life","f":"","card":false,"id":265},
+ {"k":"卒業式","r":"そつぎょうしき","lv":2,"ic":"🎓","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":266},
+ {"k":"入学式","r":"にゅうがくしき","lv":2,"ic":"🌸","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":267},
+ {"k":"委員会","r":"いいんかい","lv":1,"ic":"🏅","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":268},
+ {"k":"クラブ活動","r":"くらぶかつどう","lv":2,"ic":"⚾","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":269},
+ {"k":"体育館","r":"たいいくかん","lv":2,"ic":"🏟️","rar":2,"go":"place","cat":"life","f":"","card":false,"id":270},
+ {"k":"プール","r":"ぷーる","lv":1,"ic":"🏊","rar":1,"go":"place","cat":"life","f":"","card":false,"id":271},
+ {"k":"教科書","r":"きょうかしょ","lv":2,"ic":"📚","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":272},
+ {"k":"連絡帳","r":"れんらくちょう","lv":2,"ic":"📒","rar":2,"go":"thing","cat":"life","f":"","card":false,"id":273},
  {"k":"セブンイレブン","r":"せぶんいれぶん","lv":2,"ic":"🏪","rar":1,"go":"place","cat":"life","f":"","card":false,"id":274},
  {"k":"ローソン","r":"ろーそん","lv":1,"ic":"🏪","rar":1,"go":"place","cat":"life","f":"","card":false,"id":275},
  {"k":"ファミリーマート","r":"ふぁみりーまーと","lv":2,"ic":"🏪","rar":1,"go":"place","cat":"life","f":"","card":false,"id":276},
@@ -830,7 +877,36 @@ const WORDS = [
  {"k":"給食","r":"きゅうしょく","lv":2,"ic":"🍱","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":299},
  {"k":"昼休み","r":"ひるやすみ","lv":1,"ic":"⏰","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":300},
  {"k":"プリント","r":"ぷりんと","lv":1,"ic":"📄","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":301},
- {"k":"タイピング","r":"たいぴんぐ","lv":1,"ic":"⌨️","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":302}
+ {"k":"タイピング","r":"たいぴんぐ","lv":1,"ic":"⌨️","rar":1,"go":"thing","cat":"life","f":"","card":false,"id":302},
+ {"k":"丹沢","r":"たんざわ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":303},
+ {"k":"ぽろたん","r":"ぽろたん","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"かわがむきやすい、{栗|くり}のしゅるいの一つだよ。","id":304},
+ {"k":"利平","r":"りへい","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":305},
+ {"k":"銀寄","r":"ぎんよせ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":306},
+ {"k":"岸根","r":"がんね","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"つぶが大きい、{栗|くり}のしゅるいの一つだよ。","id":307},
+ {"k":"石鎚","r":"いしづち","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":308},
+ {"k":"人丸","r":"ひとまる","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"つぶは小さいけれど、あまくてかおりのよい{栗|くり}のしゅるいだよ。","id":309},
+ {"k":"国見","r":"くにみ","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":310},
+ {"k":"美玖里","r":"みくり","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":311},
+ {"k":"焼き栗","r":"やきぐり","lv":1,"ic":"📍","rar":1,"go":"food","cat":"kuri","f":"{栗|くり}を焼いた、あつあつのおやつだよ。","id":312},
+ {"k":"栗甘納豆","r":"くりかなんと","lv":2,"ic":"📍","rar":1,"go":"food","cat":"kuri","f":"{栗|くり}をあまくにて、さとうでつつんだおかしだよ。","id":313},
+ {"k":"和モンブラン","r":"わもんぶらん","lv":2,"ic":"📍","rar":1,"go":"food","cat":"kuri","f":"{栗|くり}を使った、和風のモンブランだよ。","id":314},
+ {"k":"栗の日本一","r":"くりのにほんいち","lv":2,"ic":"📍","rar":2,"go":"say","cat":"kuri","f":"{笠間|かさま}は、{栗|くり}をそだてる面積や人数が日本一なんだよ。","id":315},
+ {"k":"笠間の栗ブランド認証","r":"かさまのくりぶらんどにんしょう","lv":3,"ic":"📍","rar":1,"go":"thing","cat":"kuri","f":"","card":false,"id":316},
+ {"k":"かさましこ","r":"かさましこ","lv":1,"ic":"📍","rar":2,"go":"thing","cat":"yaki","f":"{笠間|かさま}と益子が、いっしょに{日本遺産|にほんいさん}に選ばれたよ。","id":317},
+ {"k":"益子焼","r":"ましこやき","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"栃木県の益子町でつくられる焼きものだよ。{笠間焼|かさまやき}と兄弟みたいな産地だよ。","id":318},
+ {"k":"兄弟産地","r":"きょうだいさんち","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"{笠間|かさま}と益子は、なかのよい焼きものの兄弟産地とよばれているよ。","id":319},
+ {"k":"登り窯","r":"のぼりがま","lv":1,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"さかのように、いくつもの部屋が上へならんだ、焼きもののかまだよ。","id":320},
+ {"k":"日本遺産","r":"にほんいさん","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"国が、むかしからの文化やものがたりを、えらんで守る制度だよ。","id":321},
+ {"k":"笠間焼陶雛","r":"かさまやきとうびな","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"{笠間焼|かさまやき}でつくった、ひなにんぎょうだよ。","id":322},
+ {"k":"民藝運動","r":"みんげいうんどう","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"yaki","f":"くらしの道具にある美しさを見つけよう、という動きだよ。益子でも広まったよ。","id":323},
+ {"k":"飯綱神社","r":"いいづなじんじゃ","lv":2,"ic":"📍","rar":1,"go":"place","cat":"jinja","f":"{愛宕山|あたごやま}のてっぺんにある神社だよ。","id":324},
+ {"k":"十三天狗","r":"じゅうさんてんぐ","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"jinja","f":"{愛宕山|あたごやま}には、13人の{天狗|てんぐ}がすんでいたというお話があるよ。","id":325},
+ {"k":"悪態まつり","r":"あくたいまつり","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"event","f":"12月に{愛宕山|あたごやま}で行われる、めずらしいお祭りだよ。{天狗|てんぐ}のすがたの人たちが出てくるよ。","id":326},
+ {"k":"祇園祭","r":"ぎおんまつり","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"event","f":"夏に、町のあちこちで行われるお祭りだよ。みこしが出るよ。","id":327},
+ {"k":"八幡櫓","r":"はちまんやぐら","lv":2,"ic":"📍","rar":1,"go":"thing","cat":"nature","f":"{笠間城|かさまじょう}にあった、やぐらの名前だよ。","id":328},
+ {"k":"佐白観音","r":"さしろかんのん","lv":2,"ic":"📍","rar":1,"go":"place","cat":"jinja","f":"{佐白山|さしろやま}のふもとにある、お寺だよ。","id":329},
+ {"k":"ヘリテージストーン","r":"へりてーじすとーん","lv":2,"ic":"📍","rar":2,"go":"thing","cat":"yaki","f":"稲田石をふくむ石が、世界でみとめられた大切な石になったよ。","id":330},
+ {"k":"笠間クラインガルテン","r":"かさまくらいんがるてん","lv":3,"ic":"📍","rar":1,"go":"place","cat":"nature","f":"町の人が、はたけを借りて野菜をそだてる場所だよ。","id":331}
 ];
 WORDS.forEach((w,i)=>w.id=i); // ※ idは もとの じゅんばんを まもる（ほぞんデータと むすびつくため）
 const CARDS=WORDS.filter(w=>w.card!==false); // ガチャで でる カード（タイピングだけの ことばも ある）
@@ -1194,7 +1270,7 @@ Object.assign(ICONS,{
 "info":"<rect x=\"12\" y=\"46\" width=\"76\" height=\"40\" fill=\"#fff3d6\"/><path d=\"M6 48L50 22l44 26z\" fill=\"#2f7f9e\"/><circle cx=\"50\" cy=\"64\" r=\"12\" fill=\"#6bb4dc\"/><path d=\"M50 58v1M50 63v9\" stroke=\"#fff\" stroke-width=\"4\" fill=\"none\"/><rect x=\"18\" y=\"58\" width=\"14\" height=\"12\" fill=\"#bfe6f6\"/><rect x=\"68\" y=\"58\" width=\"14\" height=\"12\" fill=\"#bfe6f6\"/>",
 "bus":"<rect x=\"10\" y=\"26\" width=\"80\" height=\"48\" rx=\"10\" fill=\"#6cc07a\"/><rect x=\"18\" y=\"34\" width=\"20\" height=\"16\" rx=\"3\" fill=\"#bfe6f6\"/><rect x=\"44\" y=\"34\" width=\"20\" height=\"16\" rx=\"3\" fill=\"#bfe6f6\"/><rect x=\"70\" y=\"34\" width=\"14\" height=\"24\" rx=\"3\" fill=\"#bfe6f6\"/><path d=\"M10 58h60\" fill=\"none\" stroke=\"#fff3d6\" stroke-width=\"3\"/><circle cx=\"28\" cy=\"76\" r=\"9\" fill=\"#3a2e4f\"/><circle cx=\"72\" cy=\"76\" r=\"9\" fill=\"#3a2e4f\"/><circle cx=\"28\" cy=\"76\" r=\"3\" fill=\"#fff\" stroke=\"none\"/><circle cx=\"72\" cy=\"76\" r=\"3\" fill=\"#fff\" stroke=\"none\"/>"
 });
-const ICONMAP={"おうえんまろん": "marronbox", "マロン": "kuri", "栗": "kuri", "まろんちゃん": "kuri", "ナガタフーズ": "factory", "かさまキッズ応援部": "heartflag", "茨城おみやげ大賞": "trophy", "モンブラン": "montblanc", "笠間和栗のモンブラン": "montblanc", "栗ひろい": "kuribasket", "かさま新栗まつり": "kuriyama", "いちご狩り": "strawberry", "笠間焼": "yunomi", "笠間焼協同組合": "yunomi", "陶芸": "rokuro", "ろくろ": "rokuro", "てびねり": "clay", "笠間の陶炎祭": "utsuwastall", "笠間浪漫": "utsuwastall", "彩初窯市": "kadomatsu", "笠間工芸の丘": "koubou", "茨城県立笠間陶芸大学校": "koubou", "いそべ陶苑": "koubou", "石の百年館": "ishi", "稲田石": "ishi", "石切山脈": "ishi", "笠間ギャラリーロード": "frame", "窯元": "kiln", "箱田焼": "tsubo", "伝統的工芸品": "tsubo", "笠間日動美術館": "palette", "パレット": "palette", "春風萬里荘": "chashitsu", "夢境庵": "chashitsu", "茶室": "chashitsu", "茨城県陶芸美術館": "museum", "笠間稲荷美術館": "museum", "歴史民俗資料館": "museum", "白凛居": "machiya", "かさま歴史交流館井筒屋": "machiya", "筑波海軍航空隊記念館": "kinenkan", "地域交流センターともべ": "hall", "地域交流センターいわま": "hall", "トモア": "heartbldg", "笠間図書館": "books", "友部図書館": "books", "岩間図書館": "books", "笠間公民館": "kominkan", "友部公民館": "kominkan", "岩間公民館": "kominkan", "笠間市役所": "townhall", "市民体育館": "taiikukan", "北大路魯山人": "chawan", "春風庵": "chawan", "枯山水": "sekitei", "芸術の村": "atelier", "笠間稲荷神社": "toriifox", "笠間いなり寿司": "inarizushi", "いな吉": "fox", "きつね": "fox", "あぶらあげ": "aburaage", "菊人形": "kikuningyo", "藤": "fuji", "常陸国出雲大社": "torii", "愛宕神社": "torii", "鳥居": "torii", "愛宕山": "hill", "佐白山": "hill", "難台山": "hill", "吾国山": "hill", "朝房山": "hill", "仏頂山": "hill", "天狗": "tengu", "あたご天狗の森": "tengu", "六所神社": "shrineB", "羽梨山神社": "shrineB", "西念寺": "temple", "林照寺": "temple", "光明寺": "temple", "正福寺": "temple", "楞厳寺": "sanmon", "縁結び": "musubi", "大国主大神": "shimenawa", "しめ縄": "shimenawa", "笠間芸術の森公園": "park", "佐白山麓公園": "park", "福ちゃんの森公園": "park", "笠間市総合公園": "park", "笠間中央公園": "park", "あそびの杜": "asobi", "笠間つつじ公園": "tsutsuji", "笠間つつじまつり": "tsutsuji", "つつじ": "tsutsuji", "笠間城跡": "jouseki", "北山公園": "lake", "涸沼川": "river", "飯田ダム": "dam", "かたくり": "katakuri", "すずらん": "suzuran", "菊": "kiku", "笠間の菊まつり": "kiku", "梅": "ume", "梨": "pear", "桜": "sakura", "ムラサキパークかさま": "skatepark", "スケートボード": "skateboard", "スケボー": "skateboard", "BMX": "bmx", "インラインスケート": "inline", "ストリート": "street", "パーク": "bowl", "ヘルメット": "helmet", "シェアサイクル": "cycling", "サイクリング": "cycling", "スナッグゴルフ": "golf", "合気道": "dogi", "舞闘炎": "dance", "神事流鏑馬": "yabusame", "道の駅かさま": "yasai", "みどりの風": "yasai", "メダカ": "medaka", "笠間観光協会": "info", "かさま観光周遊バス": "bus", "友部駅": "station", "笠間駅": "station", "岩間駅": "station", "宍戸駅": "station", "稲田駅": "station", "福原駅": "station", "水戸線": "train", "常磐線": "train", "友部インターチェンジ": "interchange", "笠間西インターチェンジ": "interchange", "岩間インターチェンジ": "interchange", "友部サービスエリア": "highway", "笠間パーキングエリア": "highway", "北関東自動車道": "highway", "常磐自動車道": "highway", "笠間市": "townmap", "笠間": "town", "友部": "town", "岩間": "town", "泉市野谷入会地": "pin", "笠間小学校": "school", "稲田小学校": "school", "宍戸小学校": "school", "友部小学校": "school", "北川根小学校": "school", "大原小学校": "school", "友部第二小学校": "school", "岩間第一小学校": "school", "岩間第二小学校": "school", "岩間第三小学校": "school", "みなみ学園": "school", "笠間中学校": "school", "稲田中学校": "school", "友部中学校": "school", "友部第二中学校": "school", "岩間中学校": "school", "笠間高校": "highschool", "IT未来高校": "highschool", "友部特別支援学校": "school", "友部東特別支援学校": "school", "かさまこども園": "nursery", "いなだこども園": "nursery", "めぐみこども園": "nursery", "おしのべこども園": "nursery", "すみれこども園": "nursery", "くるす保育所": "nursery", "ともべ保育園": "nursery", "大沢保育園": "nursery", "みか保育園": "nursery", "岩間保育園": "nursery", "いちご保育園": "nursery", "大沢すくすく保育園": "nursery", "すみれナーサリー": "nursery", "ドレミ幼稚園": "kinder", "さくら幼稚園": "kinder", "ともべ幼稚園": "kinder", "岩間第一幼稚園": "kinder", "こじか幼稚園": "kinder", "合唱": "gassho", "運動会": "undokai", "登校": "tokou", "下校": "geko", "まち探検": "tanken", "遠足": "ensoku", "水泳": "swim", "体育": "taiiku", "国語": "kokugo", "算数": "sansu", "なわとび": "nawatobi", "音楽": "ongaku", "理科": "rika", "社会": "shakai", "生活": "seikatsu", "ランドセル": "randoseru", "宿泊学習": "shukuhaku", "修学旅行": "shugaku", "夏休み": "natsu", "冬休み": "fuyu", "春休み": "haru", "ゴールデンウィーク": "gw", "インフルエンザ": "flu", "保健室": "hoken", "卒業式": "sotsugyo", "入学式": "nyugaku", "委員会": "iinkai", "クラブ活動": "club", "体育館": "taiikukan", "プール": "pool", "教科書": "kyokasho", "連絡帳": "renrakucho", "セブンイレブン": "conbini", "ローソン": "conbini", "ファミリーマート": "conbini", "セイコーマート": "conbini", "おはようございます": "sunrise", "こんにちは": "hello", "さようなら": "bye", "ごめんね": "sorry", "ごめんなさい": "sorry", "ありがとう": "thanks", "ありがとうございます": "thanks", "お願いします": "please", "いいよ": "ok", "嫌です": "ng", "やめて": "stop", "また今度ね": "calendar", "また明日": "sunrise", "一緒にやらない？": "together", "私はやらない": "ng", "僕はいらない": "ng", "私もやりたい": "raise", "ブランコ": "swing", "すべり台": "slide", "うんてい": "monkey", "一輪車": "unicycle", "給食": "lunch", "昼休み": "hirun", "プリント": "print", "タイピング": "keyboard", "赤坂": "pin", "安居": "pin", "旭町": "pin", "飯合": "pin", "飯田": "pin", "池野辺": "pin", "石井": "pin", "石寺": "pin", "泉": "pin", "市野谷": "pin", "稲田": "pin", "大郷戸": "pin", "大古山": "pin", "大田町": "pin", "大橋": "pin", "大渕": "pin", "押辺": "pin", "小原": "pin", "柏井": "pin", "片庭": "pin", "金井": "pin", "上市原": "pin", "上加賀田": "pin", "上郷": "pin", "北吉原": "pin", "来栖": "pin", "鯉淵": "pin", "鴻巣": "pin", "五平": "pin", "下市毛": "pin", "下市原": "pin", "下加賀田": "pin", "下郷": "pin", "住吉": "pin", "平町": "pin", "中央": "pin", "手越": "pin", "寺崎": "pin", "友部駅前": "pin", "中市原": "pin", "長兎路": "pin", "随分附": "pin", "仁古田": "pin", "箱田": "pin", "橋爪": "pin", "土師": "pin", "東平": "pin", "日草場": "pin", "日沢": "pin", "福島": "pin", "福田": "pin", "福原": "pin", "南小泉": "pin", "南友部": "pin", "南吉原": "pin", "美原": "pin", "本戸": "pin", "八雲": "pin", "矢野下": "pin", "湯崎": "pin", "吉岡": "pin"};
+const ICONMAP={"おうえんまろん": "marronbox", "マロン": "kuri", "栗": "kuri", "まろんちゃん": "kuri", "ナガタフーズ": "factory", "かさまキッズ応援部": "heartflag", "茨城おみやげ大賞": "trophy", "モンブラン": "montblanc", "笠間和栗のモンブラン": "montblanc", "栗ひろい": "kuribasket", "かさま新栗まつり": "kuriyama", "いちご狩り": "strawberry", "笠間焼": "yunomi", "笠間焼協同組合": "yunomi", "陶芸": "rokuro", "ろくろ": "rokuro", "てびねり": "clay", "笠間の陶炎祭": "utsuwastall", "笠間浪漫": "utsuwastall", "彩初窯市": "kadomatsu", "笠間工芸の丘": "koubou", "茨城県立笠間陶芸大学校": "koubou", "いそべ陶苑": "koubou", "石の百年館": "ishi", "稲田石": "ishi", "石切山脈": "ishi", "笠間ギャラリーロード": "frame", "窯元": "kiln", "箱田焼": "tsubo", "伝統的工芸品": "tsubo", "笠間日動美術館": "palette", "パレット": "palette", "春風萬里荘": "chashitsu", "夢境庵": "chashitsu", "茶室": "chashitsu", "茨城県陶芸美術館": "museum", "笠間稲荷美術館": "museum", "歴史民俗資料館": "museum", "白凛居": "machiya", "かさま歴史交流館井筒屋": "machiya", "筑波海軍航空隊記念館": "kinenkan", "地域交流センターともべ": "hall", "地域交流センターいわま": "hall", "トモア": "heartbldg", "笠間図書館": "books", "友部図書館": "books", "岩間図書館": "books", "笠間公民館": "kominkan", "友部公民館": "kominkan", "岩間公民館": "kominkan", "笠間市役所": "townhall", "市民体育館": "taiikukan", "北大路魯山人": "chawan", "春風庵": "chawan", "枯山水": "sekitei", "芸術の村": "atelier", "笠間稲荷神社": "toriifox", "笠間いなり寿司": "inarizushi", "いな吉": "fox", "きつね": "fox", "あぶらあげ": "aburaage", "菊人形": "kikuningyo", "藤": "fuji", "常陸国出雲大社": "torii", "愛宕神社": "torii", "鳥居": "torii", "愛宕山": "hill", "佐白山": "hill", "難台山": "hill", "吾国山": "hill", "朝房山": "hill", "仏頂山": "hill", "天狗": "tengu", "あたご天狗の森": "tengu", "六所神社": "shrineB", "羽梨山神社": "shrineB", "西念寺": "temple", "林照寺": "temple", "光明寺": "temple", "正福寺": "temple", "楞厳寺": "sanmon", "縁結び": "musubi", "大国主大神": "shimenawa", "しめ縄": "shimenawa", "笠間芸術の森公園": "park", "佐白山麓公園": "park", "福ちゃんの森公園": "park", "笠間市総合公園": "park", "笠間中央公園": "park", "あそびの杜": "asobi", "笠間つつじ公園": "tsutsuji", "笠間つつじまつり": "tsutsuji", "つつじ": "tsutsuji", "笠間城跡": "jouseki", "北山公園": "lake", "涸沼川": "river", "飯田ダム": "dam", "かたくり": "katakuri", "すずらん": "suzuran", "菊": "kiku", "笠間の菊まつり": "kiku", "梅": "ume", "梨": "pear", "桜": "sakura", "ムラサキパークかさま": "skatepark", "スケートボード": "skateboard", "スケボー": "skateboard", "BMX": "bmx", "インラインスケート": "inline", "ストリート": "street", "パーク": "bowl", "ヘルメット": "helmet", "シェアサイクル": "cycling", "サイクリング": "cycling", "スナッグゴルフ": "golf", "合気道": "dogi", "舞闘炎": "dance", "神事流鏑馬": "yabusame", "道の駅かさま": "yasai", "みどりの風": "yasai", "メダカ": "medaka", "笠間観光協会": "info", "かさま観光周遊バス": "bus", "友部駅": "station", "笠間駅": "station", "岩間駅": "station", "宍戸駅": "station", "稲田駅": "station", "福原駅": "station", "水戸線": "train", "常磐線": "train", "友部インターチェンジ": "interchange", "笠間西インターチェンジ": "interchange", "岩間インターチェンジ": "interchange", "友部サービスエリア": "highway", "笠間パーキングエリア": "highway", "北関東自動車道": "highway", "常磐自動車道": "highway", "笠間市": "townmap", "笠間": "town", "友部": "town", "岩間": "town", "泉市野谷入会地": "pin", "笠間小学校": "school", "稲田小学校": "school", "宍戸小学校": "school", "友部小学校": "school", "北川根小学校": "school", "大原小学校": "school", "友部第二小学校": "school", "岩間第一小学校": "school", "岩間第二小学校": "school", "岩間第三小学校": "school", "みなみ学園": "school", "笠間中学校": "school", "稲田中学校": "school", "友部中学校": "school", "友部第二中学校": "school", "岩間中学校": "school", "笠間高校": "highschool", "IT未来高校": "highschool", "友部特別支援学校": "school", "友部東特別支援学校": "school", "かさまこども園": "nursery", "いなだこども園": "nursery", "めぐみこども園": "nursery", "おしのべこども園": "nursery", "すみれこども園": "nursery", "くるす保育所": "nursery", "ともべ保育園": "nursery", "大沢保育園": "nursery", "みか保育園": "nursery", "岩間保育園": "nursery", "いちご保育園": "nursery", "大沢すくすく保育園": "nursery", "すみれナーサリー": "nursery", "ドレミ幼稚園": "kinder", "さくら幼稚園": "kinder", "ともべ幼稚園": "kinder", "岩間第一幼稚園": "kinder", "こじか幼稚園": "kinder", "合唱": "gassho", "運動会": "undokai", "登校": "tokou", "下校": "geko", "まち探検": "tanken", "遠足": "ensoku", "水泳": "swim", "体育": "taiiku", "国語": "kokugo", "算数": "sansu", "なわとび": "nawatobi", "音楽": "ongaku", "理科": "rika", "社会": "shakai", "生活": "seikatsu", "ランドセル": "randoseru", "宿泊学習": "shukuhaku", "修学旅行": "shugaku", "夏休み": "natsu", "冬休み": "fuyu", "春休み": "haru", "ゴールデンウィーク": "gw", "インフルエンザ": "flu", "保健室": "hoken", "卒業式": "sotsugyo", "入学式": "nyugaku", "委員会": "iinkai", "クラブ活動": "club", "体育館": "taiikukan", "プール": "pool", "教科書": "kyokasho", "連絡帳": "renrakucho", "セブンイレブン": "conbini", "ローソン": "conbini", "ファミリーマート": "conbini", "セイコーマート": "conbini", "おはようございます": "sunrise", "こんにちは": "hello", "さようなら": "bye", "ごめんね": "sorry", "ごめんなさい": "sorry", "ありがとう": "thanks", "ありがとうございます": "thanks", "お願いします": "please", "いいよ": "ok", "嫌です": "ng", "やめて": "stop", "また今度ね": "calendar", "また明日": "sunrise", "一緒にやらない？": "together", "私はやらない": "ng", "僕はいらない": "ng", "私もやりたい": "raise", "ブランコ": "swing", "すべり台": "slide", "うんてい": "monkey", "一輪車": "unicycle", "給食": "lunch", "昼休み": "hirun", "プリント": "print", "タイピング": "keyboard", "赤坂": "pin", "安居": "pin", "旭町": "pin", "飯合": "pin", "飯田": "pin", "池野辺": "pin", "石井": "pin", "石寺": "pin", "泉": "pin", "市野谷": "pin", "稲田": "pin", "大郷戸": "pin", "大古山": "pin", "大田町": "pin", "大橋": "pin", "大渕": "pin", "押辺": "pin", "小原": "pin", "柏井": "pin", "片庭": "pin", "金井": "pin", "上市原": "pin", "上加賀田": "pin", "上郷": "pin", "北吉原": "pin", "来栖": "pin", "鯉淵": "pin", "鴻巣": "pin", "五平": "pin", "下市毛": "pin", "下市原": "pin", "下加賀田": "pin", "下郷": "pin", "住吉": "pin", "平町": "pin", "中央": "pin", "手越": "pin", "寺崎": "pin", "友部駅前": "pin", "中市原": "pin", "長兎路": "pin", "随分附": "pin", "仁古田": "pin", "箱田": "pin", "橋爪": "pin", "土師": "pin", "東平": "pin", "日草場": "pin", "日沢": "pin", "福島": "pin", "福田": "pin", "福原": "pin", "南小泉": "pin", "南友部": "pin", "南吉原": "pin", "美原": "pin", "本戸": "pin", "八雲": "pin", "矢野下": "pin", "湯崎": "pin", "吉岡": "pin","丹沢":"kuri","ぽろたん":"kuri","利平":"kuri","銀寄":"kuri","岸根":"kuri","石鎚":"kuri","人丸":"kuri","国見":"kuri","美玖里":"kuri","焼き栗":"kuri","栗甘納豆":"kuri","和モンブラン":"montblanc","栗の日本一":"kuri","笠間の栗ブランド認証":"kuri","かさましこ":"kiln","益子焼":"yunomi","兄弟産地":"kiln","登り窯":"kiln","日本遺産":"scroll","笠間焼陶雛":"tsubo","民藝運動":"tsubo","飯綱神社":"torii","十三天狗":"tengu","悪態まつり":"tengu","祇園祭":"fireworks","八幡櫓":"ruins","佐白観音":"temple","ヘリテージストーン":"ishi","笠間クラインガルテン":"sprout"};
 const CATICON={"machi": "pin", "shi": "townmap", "kuri": "kuri", "yaki": "kiln", "art": "museum", "jinja": "torii", "nature": "hill", "sport": "skateboard", "event": "festival", "shop": "yasai", "traffic": "road", "school": "school", "life": "school"};
 /* 栗の絵：Noto Emoji（Google・Apache License 2.0）*/
 const ICONS_RAW={kuri:"<radialGradient id=\"aoma\" cx=\"47.576\" cy=\"775.168\" r=\"62.384\" gradientTransform=\"translate(0 -712.614)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".049\" style=\"stop-color:#ba6959\"/><stop offset=\".078\" style=\"stop-color:#b76656\"/><stop offset=\".489\" style=\"stop-color:#8a4133\"/><stop offset=\".809\" style=\"stop-color:#6f2a1d\"/><stop offset=\".995\" style=\"stop-color:#652115\"/></radialGradient><path d=\"M119.3 78.7C117.8 42 90.4 37.1 77.8 28.3 70.2 23 66.9 11.8 63.3 12.2c-3.6.3-6.1 13.3-25.1 23.3-17.6 9.3-35.8 22.9-27.7 56.2.8 3.2 1.8 6.1 3.1 8.7 33.9 19.1 72.3 9.3 104.1-7.3 1.2-4.3 1.8-9 1.6-14.4z\" style=\"fill:url(#aoma)\"/><linearGradient id=\"aomb\" x1=\"65.7\" x2=\"65.7\" y1=\"815.364\" y2=\"834.864\" gradientTransform=\"translate(0 -712.614)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" style=\"stop-color:#69452b\"/><stop offset=\".193\" style=\"stop-color:#7b563c\"/><stop offset=\".577\" style=\"stop-color:#aa8267\"/><stop offset=\".906\" style=\"stop-color:#d6ac90\"/></linearGradient><path d=\"M13.6 100.4c11.6 24.3 41.2 23.2 53.7 24 11.8.8 43-5.2 50.5-31.3-15.9 8.3-35.7 2-51.7 13.2-14.7 10.2-35.6-2.5-52.5-5.9z\" style=\"fill:url(#aomb)\"/><g style=\"opacity:.2\"><path d=\"M63.6 15.5c.8.9 2 2.7 2.9 4.1 2.4 3.6 5.3 8.1 9.6 11.1 2.7 1.9 6.1 3.6 9.6 5.4 13.2 6.8 29.6 15.2 30.7 42.7.2 4.8-.3 9.3-1.5 13.3-6.8 23.9-35.2 29.2-45.5 29.2-.7 0-1.3 0-1.9-.1-1.2-.1-2.6-.1-4-.2-14-.6-37.4-1.7-47.2-22.1-1.2-2.6-2.2-5.3-2.9-8.1C10 76.6 11.2 65.3 17 56.4c5.5-8.3 14.6-13.8 22.7-18.3C52.4 31 58.2 23 61.6 18.2c.6-1 1.4-2 2-2.7m-.1-3.3h-.2c-3.5.3-6.3 12.8-25.1 23.3C20 45.7 2.5 58 10.5 91.7c.8 3.2 1.8 6.1 3.1 8.7 11.6 24.3 41.2 23.2 53.7 24 .6 0 1.3.1 2.1.1 13.1 0 41.3-6.7 48.4-31.4 1.2-4.2 1.8-9 1.6-14.3-1.7-36.8-29-41.7-41.7-50.5-7.3-5.2-10.7-16.1-14.2-16.1z\" style=\"fill:#eee\"/></g><g style=\"opacity:.63\"><path d=\"M91.1 44.9c8.3 2.3 14.9 9.3 18.4 16.9 2.1 4.4 3.3 9.3 3.4 14.2.1 2.5-.2 4.9-.7 7.4-.2.7-1.1 5.2-1.9 5.3-1.1.2-.5-2-.5-2.8 0-2.2-.1-4.4-.4-6.6-.6-4.8-2-9.6-3.9-14.1-3.4-7.8-8.4-14.4-14.8-19.9l.4-.4z\" style=\"fill:#42210b\"/></g><g style=\"opacity:.57\"><path d=\"M74.1 39.3c14.1 4.2 23.1 20.2 23.1 34.3 0 3.4-.5 6.9-1.7 10.1-.1.4-.7 2.5-1.3 2.2-.4-.2 0-3.3-.1-3.9-.1-8-2-15.8-5.4-23-3.6-7.6-8.7-13.9-15-19.4.1-.1.2-.2.4-.3z\" style=\"fill:#42210b\"/></g><path d=\"M46 41.3c-2.5 4-5.2 7.8-7.2 12-2.3 4.9-3.9 10-4.9 15.3-.9 4.7-1.3 9.4-1.4 14.2 0 1.6.9 12.6-.3 13-2.8-9.8-4.1-20.1-1.8-30.2 1.3-5.6 3.5-11 6.9-15.7.8-1.2 7.6-9.6 8.7-8.6zM24.1 88.5c-3.7-5.1-4.5-12.2-3.2-18.2.6-2.9 1.7-5.8 3.3-8.4.7-1.2 3.2-5.2 4.6-4.9-2.8 5.1-4.6 10.5-5.3 16.3-.4 3.1-.4 6.2-.1 9.3.1 1.5 1.3 5.1.7 5.9z\" style=\"fill:#d1a088\"/><g style=\"opacity:.57\"><path d=\"M76.4 60.9c5.5 1.6 9.2 7.1 10.5 12.4.7 3.2.7 6.6-.3 9.7-.3 1-2.3 6.3-3.7 6-.7-.1.1-4.8.1-5.7 0-3-.3-6-1-8.9-.7-2.8-1.6-5.5-2.9-8.1-.7-1.3-1.4-2.6-2.2-3.8-.1-.2-.9-1-.8-1.2 0-.1.3-.4.3-.4z\" style=\"fill:#42210b\"/></g>"};
@@ -1263,7 +1339,7 @@ let IS_TOUCH=window.matchMedia&&matchMedia('(pointer:coarse)').matches; // タ�
 if(IS_TOUCH) document.documentElement.classList.add('touch');
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));
-  if(id==='title') renderTitle(); if(id==='coursesScr') renderCourses(); if(id==='gacha') renderGacha(); if(id==='zukan') renderZukan(); if(id==='cert') renderCert();
+  if(id==='practiceScr') renderPractice(); if(id==='title') renderTitle(); if(id==='coursesScr') renderCourses(); if(id==='gacha') renderGacha(); if(id==='zukan') renderZukan(); if(id==='cert') renderCert();
   window.scrollTo(0,0);
 }
 document.addEventListener('click',e=>{
@@ -1300,8 +1376,15 @@ $('howBtn').onclick=()=>openModal(`<h2>❓ あそびかた</h2>${MAR('chara','ma
   <li>「し」は <kbd>shi</kbd> でも <kbd>si</kbd> でも OK。じぶんの うちかたで いいよ。</li>
   <li>じかんは 60びょう。<b>はやさより せいかく</b>が だいじ！ ミスしないで うつと てんすうが おおきくなるよ。</li>
   <li>せいかくさが <b>80%・90%・95%</b>を こえると ボーナス。<b>ミス0</b>なら <b>パーフェクト</b>で ボーナスが いちばん おおきいよ！</li>
-  <li>てんすうで <b>しょうごう</b>が もらえる。くりを ためて <b>ガチャ</b>を まわし、ふるさとカードを ぜんぶ あつめよう！ 町域の カードを ぜんぶ あつめると <b>証書</b>が もらえるよ。</li>
+  <li>てんすうで <b>称号</b>が もらえる。くりを ためて <b>ガチャ</b>を まわし、ふるさとカードを ぜんぶ あつめよう！ 町域の カードを ぜんぶ あつめると <b>証書</b>が もらえるよ。</li>
+  <li><b>れんしゅう</b>は じかんなし。「コースを えらぶ」の がめんから あそべるよ。てんすうは つかないから、ゆっくり うってみよう。</li>
   </ol><div class="row" style="justify-content:center"><button class="btn" onclick="closeModal()">わかった！</button></div>`);
+$('oyaBtn').onclick=()=>openModal(`<div class="oyaTxt"><h2>👪 おうちの人・先生へ</h2>
+  <h3>このゲームについて</h3><p>笠間市の言葉（地区・学校・栗・笠間焼・神社・公園・おまつりなど）をローマ字で打ちながら、「ふるさとカード」を集めるタイピングゲームです。画面の中で終わらず、実際に町へ出かけたくなることをねらっています。</p>
+  <h3>遊び方の目安</h3><p>本編は60秒です。速さよりも正確さを大切にした得点になっています。まだ打つのがむずかしいこどもは、「コースを選択する」の中の「れんしゅう」から始めると、時間を気にせず練習できます（得点や記録には影響しません）。</p>
+  <h3>記録について</h3><p>得点・栗・カードは、いま使っているパソコン（Chromebook）のブラウザの中だけに保存され、外部には送信されません。同じパソコンを何人かで使うと記録が混ざることがあります。</p>
+  <h3>掲載している名前について</h3><p>学校・園・施設などの名前は、公式の名称を使っています。評価や比較を目的にした表示はしていません。内容でお気づきのことがあれば、作者（へいなか）までご連絡ください。</p>
+  <div class="row" style="justify-content:center;margin-top:14px"><button class="btn" onclick="closeModal()">とじる</button></div></div>`);
 $('certBtn').onclick=()=>show('cert');
 function openModal(h){SE.page();$('modalBody').innerHTML=h;$('modal').classList.add('on')}
 function closeModal(){$('modal').classList.remove('on')}
@@ -1323,6 +1406,7 @@ const EASY_N=25;
 function easyPool(){return WORDS.filter(w=>w.lv===1||(w.lv===2&&w.r.length<=4))} // かんたん：みじかい ことば
 function buildDeck(lv){return lv===1?shuffle(easyPool()).slice(0,EASY_N):shuffle(WORDS.filter(w=>w.lv===lv))}
 function startGame(lv){
+  if($('game').classList.contains('practice')){$('game').classList.remove('practice');$('tleft').textContent=GAME_SEC;$('tbar').style.width='100%'}
   ac(); const hid=$('hid'); hid.value=''; if(IS_TOUCH) hid.focus(); else hid.blur();
   G={lv,score:0,combo:0,maxCombo:0,ok:0,ng:0,words:[],deck:buildDeck(lv),di:0,m:null,w:null,miss:false,t0:0,left:GAME_SEC};
   show('game'); state='count'; nextWord(); updHud();
@@ -1344,6 +1428,7 @@ const REPEAT_P={1:0.3,2:0.2,3:0.15}; // むずかしいは すこし ひかえ�
 const LOWER_P=0.1; // うえの コースでも 1わりくらいは したの コースの ことばが でる
 function lowerPool(lv){return lv===2?WORDS.filter(w=>w.lv===1):lv===3?WORDS.filter(w=>w.lv===1||w.lv===2):[]} // ときどき まえに でた ことばが もどってくる
 function nextWord(){
+  if(G.practice){const w=G.deck[G.di++]; G.w=w; G.prev=w; G.m=makeMatcher(w.r); G.miss=false; renderWord(); return} // れんしゅう：じゅんばんに でる
   const pickFrom=pool=>{const c=pool.filter(w=>w!==G.prev);return c.length?c[Math.random()*c.length|0]:null};
   let w=null;
   if(G.words.length>=3&&Math.random()<REPEAT_P[G.lv]) w=pickFrom(G.words.slice(-12)); // まえに でた ことば
@@ -1376,8 +1461,9 @@ function fitWord(){
 window.addEventListener('resize',()=>{if(G&&G.w&&$('game').classList.contains('on'))fitWord()});
 function updHud(){
   $('score').textContent=G.score;
-  $('combo').textContent=G.combo>=5?G.combo+' コンボ！'+(G.combo>=20?' ×'+Math.min(4,1+Math.floor(G.combo/20)):''):'';
-  $('combo').classList.toggle('big',G.combo>=20);
+  if(G.practice){$('tleft').textContent=Math.min(G.words.length+1,G.total)+' / '+G.total;return} // れんしゅう：すすみぐあいだけ
+  $('combo').textContent=G.combo>=5?G.combo+' コンボ！'+(G.combo>=25?' ×'+Math.min(3,1+Math.floor(G.combo/25)):''):'';
+  $('combo').classList.toggle('big',G.combo>=25);
 }
 function flash(t,c){const f=$('flash');f.textContent=t;f.style.color=c||'var(--ok)';f.classList.remove('go');void f.offsetWidth;f.classList.add('go')}
 function handleChar(ch){
@@ -1385,10 +1471,11 @@ function handleChar(ch){
   ch=ch.replace(/[\uff01-\uff5e]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xfee0)).replace(/ー/,'-');
   if(!/^[a-zA-Z0-9?\-]$/.test(ch)) return;
   if(press(G.m,ch)){
-    G.score+=keyPoint(G.combo,G.lv); G.combo++; G.ok++; G.maxCombo=Math.max(G.maxCombo,G.combo); SE.key(G.combo); if([10,25,50,100,150,200].includes(G.combo)) setTimeout(()=>SE.combo(),60);
+    G.score+=keyPoint(G.combo,G.lv); G.combo++; G.ok++; G.maxCombo=Math.max(G.maxCombo,G.combo); SE.key(G.combo); if(!G.practice&&[10,25,50,100,150,200].includes(G.combo)) setTimeout(()=>SE.combo(),60);
     if(isDone(G.m)){
       const b=wordBonus(G.m,!G.miss,G.lv); G.score+=b; G.words.push(G.w);
-      if(!G.miss){flash('ノーミス！ +'+b,'var(--sun)');SE.perfect()} else {flash('+'+b);SE.word()}
+      if(G.practice){ if(!G.miss){flash('ノーミス！','var(--sun)');SE.perfect()} else SE.word(); if(G.words.length>=G.total){endPractice();return} }
+      else if(!G.miss){flash('ノーミス！ +'+b,'var(--sun)');SE.perfect()} else {flash('+'+b);SE.word()}
       nextWord();
     } else renderWord();
   }else{
@@ -1407,6 +1494,7 @@ function tick(now){
 }
 document.addEventListener('keydown',e=>{
   if($('modal').classList.contains('on')&&e.key==='Escape'){closeModal();return}
+  if($('practiceScr').classList.contains('on')&&state==='idle'&&e.key==='Escape'){show('coursesScr');return}
   if($('coursesScr').classList.contains('on')&&state==='idle'){
     if(e.key==='Escape'){show('title');return}
     if(/^[123]$/.test(e.key)){const c=COURSES[e.key-1]; if(unlocked(c)){ac();SE.select();startGame(c.lv)} else SE.locked(); return}
@@ -1432,7 +1520,7 @@ $('quitBtn').onclick=()=>endGame(true);
 
 function endGame(quit){
   state='idle'; cdTimers.forEach(clearTimeout); $('hid').blur(); $('count').classList.remove('on');
-  if(quit){show('title');return}
+  if(quit){show(G&&G.practice?'practiceScr':'title');return}
   SE.timeup(); setTimeout(()=>SE.end(),700);
   const base=G.score, ab=accBonus(base,G.ok,G.ng); G.score=base+ab.pt;
   const lv=G.lv, sc=G.score, prev=S.best[lv]||0, before=COURSES.map(unlocked);
@@ -1443,7 +1531,7 @@ function endGame(quit){
   $('rScore').textContent=sc;
   $('rBest').textContent=sc>prev&&sc>0?'🎉 ハイスコア こうしん！':'';
   $('rTitle').textContent=titleOf(sc)[1];
-  const nx=nextTitle(sc); $('rNext').textContent=nx?'あと '+(nx[0]-sc)+'てんで「'+nx[1]+'」':'さいこうの しょうごうだ！';
+  const nx=nextTitle(sc); $('rNext').textContent=nx?'あと '+(nx[0]-sc)+'てんで「'+nx[1]+'」':'さいこうの 称号だ！';
   $('rWords').textContent=G.words.length;
   $('rAcc').textContent=Math.floor(accOf(G.ok,G.ng))+'%';
   $('rCombo').textContent=G.maxCombo;
@@ -1462,11 +1550,38 @@ function endGame(quit){
 function bridgeMsg(words){
   const pool=words.length?words:WORDS.filter(w=>w.lv===G.lv);
   const w=pool[Math.random()*pool.length|0], nm=w.k;
-  const m={place:`次は本物の「${nm}」に行ってみよう！`,town:`「${nm}」ってどんな町かな？地図で探して、歩いてみよう！`,food:`今度「${nm}」を味わってみよう！`,
+  const m={place:(w.cat==='school'?`「${nm}」は、町のどのあたりにあるかな？地図で見つけてみよう！`:`次は本物の「${nm}」に行ってみよう！`),town:`「${nm}」ってどんな町かな？地図で探して、歩いてみよう！`,food:`今度「${nm}」を味わってみよう！`,
     say:`本物の友だちやお家の人に「${w.k}」と伝えてみよう！`,creature:`本物の「${nm}」を探してみよう！`,thing:`お家の人に「${nm}」の話をしてみよう！`}[w.go];
   return '<span class="bi">'+iconHTML(w)+'</span> '+m+'<br><span style="font-weight:400;font-size:14px">ゲームの次は、町で探検だ。</span>';
 }
 $('againBtn').onclick=()=>{SE.select();startGame(G.lv)};
+
+// ===== れんしゅう（じかんなし・きろくに えいきょうしない） =====
+const PR={lv:1,n:10};
+function renderPractice(){
+  $('pracCourse').innerHTML=COURSES.map(c=>`<button class="pbtn ${PR.lv===c.lv?'sel':''}" data-pl="${c.lv}">${c.name}</button>`).join('');
+  $('pracCount').innerHTML=[10,20,30].map(n=>`<button class="pbtn ${PR.n===n?'sel':''}" data-pn="${n}">${n}こ</button>`).join('');
+}
+$('pracCourse').addEventListener('click',e=>{const b=e.target.closest('[data-pl]'); if(!b) return; PR.lv=+b.dataset.pl; renderPractice()});
+$('pracCount').addEventListener('click',e=>{const b=e.target.closest('[data-pn]'); if(!b) return; PR.n=+b.dataset.pn; renderPractice()});
+$('pracStart').onclick=()=>{ac();SE.select();startPractice(PR.lv,PR.n)};
+$('prAgain').onclick=()=>{ac();SE.select();startPractice(PR.lv,PR.n)};
+function startPractice(lv,n){
+  ac(); const hid=$('hid'); hid.value=''; if(IS_TOUCH) hid.focus(); else hid.blur();
+  const pool=lv===1?easyPool():WORDS.filter(w=>w.lv===lv), deck=shuffle(pool).slice(0,n);
+  G={lv,practice:true,total:deck.length,score:0,combo:0,maxCombo:0,ok:0,ng:0,words:[],deck,di:0,m:null,w:null,miss:false,t0:0,left:GAME_SEC};
+  show('game'); $('game').classList.add('practice'); state='play'; nextWord(); updHud(); G.t0=performance.now();
+}
+function fmtSec(s){return s<60?s+'秒':Math.floor(s/60)+'分 '+(s%60)+'秒'}
+function endPractice(){
+  state='idle'; $('hid').blur(); SE.end();
+  const sec=Math.round((performance.now()-G.t0)/1000), acc=Math.floor(accOf(G.ok,G.ng));
+  $('prCourse').textContent=COURSES[G.lv-1].name+'コース・'+G.total+'こ';
+  $('prWords').textContent=G.words.length; $('prAcc').textContent=acc+'%'; $('prTime').textContent=fmtSec(sec);
+  $('prMsg').textContent=acc>=80?'すごい！ せいかくに うてたよ！':'ゆっくり せいかくに うってみよう！';
+  show('practiceRes');
+}
+
 
 // ===== ガチャ =====
 function rollCard(){
